@@ -1,0 +1,163 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: whitesmoke;
+}
+
+header {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.notes-app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.notes-app h1 {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+.contact-input {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+input,
+textarea {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  font-family: "Poppins", sans-serif;
+}
+
+.contact-input button {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-input button:hover {
+  background-color: #45a049;
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.note-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.notes-body {
+  margin-left: 8px;
+  padding-left: 8px;
+  flex: 1;
+}
+
+.notes-item__title {
+  padding: 4px 0;
+}
+
+.notes-item__body {
+  padding: 4px 0;
+}
+
+.note-item__date {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.button-handler {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.notes-item__delete {
+  padding: 8px 15px;
+  font-size: 18px;
+  background-color: crimson;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notes-item__archive {
+  padding: 8px 15px;
+  font-size: 18px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notes-item__archive:hover {
+  background-color: #45a049;
+}
+
+.notes-item__delete:hover {
+  background-color: #d32f2f;
+}
+
+.notes-item__date {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.search-input {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 16px;
+}
+
+.search-input button {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.search-input button:hover {
+  background-color: #45a049;
+}
