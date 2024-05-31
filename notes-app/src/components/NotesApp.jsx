@@ -1,78 +1,125 @@
-import React from "react";
-import NotesList from "./NotesList";
-import { getData } from "../utils/data";
-import NotesInput from "./NotesInput";
+import { useState, useMemo, useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import AddPage from "../pages/AddPage";
+import ArchivePage from "../pages/ArchivePage";
+import DetailPage from "../pages/DetailPage";
+import NotFoundPage from "../pages/NotFoundPage";
 import Header from "./Header";
-import SearchInput from "./SearchInput";
+import { getUserLogged, putAccessToken } from "../utils/api";
+import { LocaleProvider } from "../contexts/LocaleContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
-class NotesApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: getData(),
-      search: "",
-    };
+function NotesApp() {
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [locale, setLocale] = useState(localStorage.getItem("locale") || "id");
+  const [authedUser, setAuthedUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
+  const navigate = useNavigate();
 
-    this.onDeleteHandler = this.onDeleteHandler.bind(this);
-    this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
-    this.onSearchHandler = this.onSearchHandler.bind(this);
-    this.onArchiveHandler = this.onArchiveHandler.bind(this);
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const newTheme = prev === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      return newTheme;
+    });
+  };
+
+  const themeContext = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme]
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  });
+
+  const toggleLocale = () => {
+    setLocale((prev) => {
+      const newLocale = prev === "id" ? "en" : "id";
+      localStorage.setItem("locale", newLocale);
+      setLocale(newLocale);
+    });
+  };
+
+  const localeContext = useMemo(
+    () => ({
+      locale,
+      toggleLocale,
+    }),
+    [locale]
+  );
+
+  const fetchUserLogged = async () => {
+    const response = await getUserLogged();
+    setAuthedUser(response.data);
+  };
+
+  useEffect(() => {
+    fetchUserLogged();
+    setInitializing(false);
+  }, []);
+
+  async function onLoginSuccess({ accessToken }) {
+    putAccessToken(accessToken);
+    fetchUserLogged();
+    navigate("/home");
   }
 
-  onDeleteHandler(id) {
-    const updatedNotes = this.state.notes.filter((note) => note.id !== id);
-    this.setState({ notes: updatedNotes });
+  async function onLogout() {
+    putAccessToken(null);
+    setAuthedUser(null);
+    navigate("/");
   }
 
-  onAddNoteHandler({ title, body }) {
-    const newNote = {
-      id: +new Date(),
-      title,
-      body,
-      createdAt: new Date().toISOString(),
-      archived: false,
-    };
-    this.setState((prevState) => ({
-      notes: [...prevState.notes, newNote],
-    }));
+  if (initializing) {
+    return <p>Loading...</p>;
   }
 
-  onSearchHandler(value) {
-    this.setState({ search: value });
-  }
-
-  onArchiveHandler(id) {
-    const updateNotes = this.state.notes.map((note) =>
-      note.id === id ? { ...note, archived: !note.archived } : note
-    );
-    this.setState({ notes: updateNotes });
-  }
-
-  render() {
-    const { notes, search } = this.state;
-
-    const filteredNotes = notes.filter((note) =>
-      note.title.toLowerCase().includes(search.toLowerCase())
-    );
-
-    const activeNotes = filteredNotes.filter((note) => !note.archived);
-    const archivedNotes = filteredNotes.filter((note) => note.archived);
-
+  if (authedUser === null) {
     return (
-      <div>
-        <Header />
-        <div className="notes-app">
-          <h1>Tambah Catatan</h1>
-          <NotesInput addNote={this.onAddNoteHandler} />
-          <SearchInput value={search} onSearch={this.onSearchHandler} />
-          <h1>Daftar Catatan</h1>
-          <NotesList notes={activeNotes} onDelete={this.onDeleteHandler} onArchive={this.onArchiveHandler} />
-          <h1>Arsip Catatan</h1>
-          <NotesList notes={archivedNotes} onDelete={this.onDeleteHandler} onArchive={this.onArchiveHandler} />
-        </div>
-      </div>
+      <LocaleProvider value={localeContext}>
+        <ThemeProvider value={themeContext}>
+          <div>
+            <main>
+              <Routes>
+                <Route
+                  path="/*"
+                  element={<LoginPage loginSuccess={onLoginSuccess} />}
+                />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </main>
+          </div>
+        </ThemeProvider>
+      </LocaleProvider>
     );
   }
+
+  return (
+    <ThemeProvider value={themeContext}>
+      <LocaleProvider value={localeContext}>
+        <div>
+          <Header authedUser={authedUser} onLogout={onLogout} />
+          <main>
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/add" element={<AddPage />} />
+              <Route path="/archive" element={<ArchivePage />} />
+              <Route path="/notes/:id" element={<DetailPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+        </div>
+      </LocaleProvider>
+    </ThemeProvider>
+  );
 }
 
 export default NotesApp;

@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 function SearchInput({ value, onSearch }) {
   const [searchTerm, setSearchTerm] = useState(value);
+
+  useEffect(() => {
+    setSearchTerm(value);
+  }, [value]);
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
@@ -25,5 +30,10 @@ function SearchInput({ value, onSearch }) {
     </div>
   );
 }
+
+SearchInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onSearch: PropTypes.func.isRequired,
+};
 
 export default SearchInput;

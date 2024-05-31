@@ -4,16 +4,89 @@
   box-sizing: border-box;
 }
 
+/* Light mode styles */
+[data-theme="light"] {
+  --bg-color: whitesmoke;
+  --text-color: #000;
+  --header-bg-color: #4caf50;
+  --header-text-color: white;
+  --btn-bg-color: #4caf50;
+  --btn-text-color: white;
+  --btn-hover-bg-color: #45a049;
+  --note-bg-color: #fff;
+  --note-shadow-color: rgba(0, 0, 0, 0.5);
+  --logout-button-bg-color: #dc3545;
+  --logout-button-text-color: #fff;
+  --logout-button-hover-bg-color: #c82333;
+  --logout-button-hover-text-color: #fff;
+  --theme-toggle-button-bg-color: #fff;
+  --theme-toggle-button-text-color: #333;
+  --theme-toggle-button-hover-bg-color: #555;
+  --theme-toggle-button-hover-text-color: #fff;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #fff;
+  --header-bg-color: #333;
+  --header-text-color: #fff;
+  --btn-bg-color: #333;
+  --btn-text-color: #fff;
+  --btn-hover-bg-color: #555;
+  --note-bg-color: #1e1e1e;
+  --note-shadow-color: rgba(255, 255, 255, 0.5);
+  --logout-button-bg-color: #dc3545;
+  --logout-button-text-color: #fff;
+  --logout-button-hover-bg-color: #c82333;
+  --logout-button-hover-text-color: #fff;
+  --theme-toggle-button-bg-color: #555;
+  --theme-toggle-button-text-color: #fff;
+  --theme-toggle-button-hover-bg-color: whitesmoke;
+  --theme-toggle-button-hover-text-color: #333;
+}
+
 body {
   font-family: "Poppins", sans-serif;
-  background-color: whitesmoke;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 header {
-  background-color: #4caf50;
-  color: white;
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
   padding: 10px 0;
   text-align: center;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navigation {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.navigation ul {
+  display: flex;
+  gap: 15px;
+}
+
+.navigation ul li {
+  list-style-type: none;
+}
+
+.navigation ul li a {
+  text-decoration: none;
+  color: var(--header-text-color);
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.navigation ul li a:hover {
+  background-color: var(--btn-hover-bg-color);
+  border-radius: 5px;
 }
 
 .notes-app {
@@ -48,19 +121,34 @@ textarea {
   font-family: "Poppins", sans-serif;
 }
 
+.search-input input {
+  width: 50%;
+}
+
+.contact-input button,
+.search-input button,
+.register-input button,
+.login-input button,
+.btn-logout {
+  background-color: var(--btn-bg-color);
+  color: var(--btn-text-color);
+}
+
 .contact-input button {
   padding: 15px;
   font-size: 16px;
   border-radius: 5px;
-  background-color: #4caf50;
-  color: white;
   font-weight: bold;
   border: none;
   cursor: pointer;
 }
 
-.contact-input button:hover {
-  background-color: #45a049;
+.contact-input button:hover,
+.search-input button:hover,
+.register-input button:hover,
+.login-input button:hover,
+.btn-logout:hover {
+  background-color: var(--btn-hover-bg-color);
 }
 
 .notes-list {
@@ -76,7 +164,7 @@ textarea {
   margin: 24px 0;
   padding: 16px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px var(--note-shadow-color);
   text-align: center;
 }
 
@@ -84,6 +172,13 @@ textarea {
   margin-left: 8px;
   padding-left: 8px;
   flex: 1;
+  text-align: center;
+}
+
+.notes-body a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: bold;
 }
 
 .notes-item__title {
@@ -151,13 +246,141 @@ textarea {
   padding: 8px;
   font-size: 16px;
   border-radius: 5px;
-  background-color: #4caf50;
-  color: white;
   font-weight: bold;
   border: none;
   cursor: pointer;
 }
 
-.search-input button:hover {
-  background-color: #45a049;
+.empty-notes {
+  text-align: center;
+  padding: 10px;
+  margin-top: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.not-found {
+  color: red;
+}
+
+.center {
+  text-align: center;
+}
+
+.register-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 65vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 10%;
+}
+
+.register-input {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 16px;
+  max-width: 50%;
+}
+
+.register-input button {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-top: 10%;
+}
+
+.login-input {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 16px;
+  max-width: 50%;
+}
+
+.login-input button {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.header-actions button:hover {
+  background-color: var(--button-hover-bg-color);
+  color: var(--button-hover-text-color);
+}
+
+.header-actions .btn-logout {
+  background-color: var(--logout-button-bg-color);
+  color: var(--logout-button-text-color);
+}
+
+.header-actions .btn-logout:hover {
+  background-color: var(--logout-button-hover-bg-color);
+  color: var(--logout-button-hover-text-color);
+}
+
+.header-actions .btn-theme-toggle {
+  background-color: var(--theme-toggle-button-bg-color);
+  color: var(--theme-toggle-button-text-color);
+}
+
+.header-actions .btn-theme-toggle:hover {
+  background-color: var(--theme-toggle-button-hover-bg-color);
+  color: var(--theme-toggle-button-hover-text-color);
+}
+
+.header-actions .btn-locale-toggle {
+  background-color: var(--btn-bg-color);
+  color: var(--btn-text-color);
+}
+
+.header-actions .btn-locale-toggle:hover {
+  background-color: var(--btn-hover-bg-color);
+}
+
+.text-link a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
 }
